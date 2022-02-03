@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { AuthUserDto } from 'src/auth/dto/authUser.dto';
@@ -39,7 +39,13 @@ export class UsersService {
     }
 
     async createUser (dto: CreateUserDto) {
-        return await this.userRepository.create(dto);
+        try {
+            return await this.userRepository.create(dto);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+        }
+        
+        
     }
 
 
