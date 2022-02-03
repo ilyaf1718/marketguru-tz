@@ -33,7 +33,7 @@ export class User extends Model<User> {
     @BeforeUpdate
     static async hashPassword(user: User) {
 
-        if (user.password)
+        if (user.changed('password'))
         user.password = await bcrypt.hash(user.password, 8);
     }
 }
